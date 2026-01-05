@@ -7,13 +7,23 @@ app = Flask(__name__)
 
 # Try to load R packages on startup to fail fast if they are missing
 try:
-    print("Loading R packages...")
+    print("Loading R packages...", flush=True)
+    
+    print("Importing actdata...", flush=True)
     actdata = importr('actdata')
+    print("✓ actdata imported", flush=True)
+
+    print("Importing inteRact...", flush=True)
     inteRact = importr('inteRact')
+    print("✓ inteRact imported", flush=True)
+
+    print("Importing bayesactR...", flush=True)
     bayesactR = importr('bayesactR')
-    print("R packages loaded successfully.")
+    print("✓ bayesactR imported", flush=True)
+    
+    print("All R packages loaded successfully.", flush=True)
 except Exception as e:
-    print(f"Error loading R packages: {e}")
+    print(f"Error loading R packages: {e}", flush=True)
 
 @app.route('/health', methods=['GET'])
 def health():
