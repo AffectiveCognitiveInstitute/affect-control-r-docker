@@ -30,8 +30,9 @@ install_github_or_stop <- function(repo, ref = NULL) {
 install_cran_or_stop(c("remotes", "jsonlite", "Rcpp"))
 
 # Core ACT / BayesACT packages (authoritative GitHub sources)
-install_github_or_stop("ahcombs/actdata")
-install_github_or_stop("ahcombs/bayesactR")
+install.packages("devtools")
+devtools::install_github("ahcombs/actdata")
+devtools::install_github("ahcombs/bayesactR")
 
 # Optional: only include if your runtime explicitly depends on it
 # install_github_or_stop("ekmaloney/inteRact")
