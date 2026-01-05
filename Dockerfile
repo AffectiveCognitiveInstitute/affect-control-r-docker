@@ -1,16 +1,9 @@
-# Fixed, newer R version that is known to work
 FROM rocker/r-ver:4.5.2
 
-# Environment
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
-# System dependencies
-# Includes everything needed for:
-# - rpy2 linking
-# - compiling common R packages
-# - GitHub installs via remotes
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
@@ -27,9 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     liblzma-dev \
     libbz2-dev \
     zlib1g-dev \
+    libzstd-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Python environment
 WORKDIR /app
 COPY requirements.txt .
 
@@ -39,11 +32,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# R packages (ACT + BayesACT)
 COPY install_packages.R .
 RUN Rscript install_packages.R
 
-# Application code
 COPY app.py .
 
 EXPOSE 5000
