@@ -35,11 +35,13 @@ devtools::install_github("ahcombs/actdata")
 devtools::install_github("ahcombs/bayesactR")
 
 # Optional: only include if your runtime explicitly depends on it
-# install_github_or_stop("ekmaloney/inteRact")
+# Optional: only include if your runtime explicitly depends on it
+install_github_or_stop("ekmaloney/inteRact")
 
 # Fail fast if core packages do not load
 message("Verifying ACT/BayesACT packages...")
 library(actdata)
+library(inteRact)
 library(bayesactR)
 
 message("ACT/BayesACT installation complete.")
