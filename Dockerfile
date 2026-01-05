@@ -4,6 +4,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
+# Required for rpy2 to find R shared libraries
+ENV R_HOME=/usr/local/lib/R
+ENV LD_LIBRARY_PATH=/usr/local/lib/R/lib:$LD_LIBRARY_PATH
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
