@@ -21,6 +21,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libbz2-dev \
     zlib1g-dev \
     libzstd-dev \
+    # Required for R packages: systemfonts, textshaping, ragg (devtools deps)
+    libfontconfig1-dev \
+    libfreetype6-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
