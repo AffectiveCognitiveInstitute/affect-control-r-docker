@@ -1,43 +1,42 @@
 #!/usr/bin/env Rscript
+# deflection.R - Calculate deflection between fundamental and transient EPAs
 
 suppressPackageStartupMessages({
-  library(jsonlite)
+    library(jsonlite)
 })
 
-# Read input
-input <- fromJSON(file("stdin"), flatten = TRUE)
+input <- tryCatch(fromJSON(file("stdin"), flatten = TRUE), error = function(e) list())
 
-# Input:
-# {
-#   "fundamental": { "actor": [E,P,A], "behavior": [E,P,A], "object": [E,P,A] },
-#   "transient": { "actor": [E,P,A], "behavior": [E,P,A], "object": [E,P,A] },
-#   "weights": { "actor": [wE,wP,wA], ... } (Optional)
-# }
+fundamentals <- input$fundamentals
+transients <- input$transients
 
-compute_deflection <- function(inp) {
-  f <- inp$fundamental
-  t <- inp$transient
-  
-  # Helper to safe convert to numeric
-  get_epa <- function(x) as.numeric(x)
-  
-  ae_sq <- sum((get_epa(f$actor) - get_epa(t$actor))^2)
-  be_sq <- sum((get_epa(f$behavior) - get_epa(t$behavior))^2)
-  oe_sq <- sum((get_epa(f$object) - get_epa(t$object))^2)
-  
-  # Standard deflection is sum of squared differences
-  total_deflection <- ae_sq + be_sq + oe_sq
-  
-  return(list(
-    deflection = total_deflection,
-    components = list(actor = ae_sq, behavior = be_sq, object = oe_sq)
-  ))
+if (is.null(fundamentals) || is.null(transients)) {
+    write(toJSON(list(error = "Both 'fundamentals' and 'transients' are required"), auto_unbox = TRUE), stdout())
+    quit(status = 0)
 }
 
-result <- tryCatch({
-  compute_deflection(input)
-}, error = function(e) {
-  list(error = e$message)
-})
+# Extract EPA vectors - expecting lists with A, B, O keys each containing [E, P, A]
+calc_element_deflection <- function(fund, trans) {
+    if (is.null(fund) || is.null(trans)) return(0)
+    fund <- as.numeric(fund)
+    trans <- as.numeric(trans)
+    if (length(fund) != 3 || length(trans) != 3) return(0)
+    sum((fund - trans)^2)
+}
+
+actor_deflection <- calc_element_deflection(fundamentals$actor, transients$actor)
+behavior_deflection <- calc_element_deflection(fundamentals$behavior, transients$behavior)
+object_deflection <- calc_element_deflection(fundamentals$object, transients$object)
+
+total_deflection <- actor_deflection + behavior_deflection + object_deflection
+
+result <- list(
+    deflection = list(
+        total = round(total_deflection, 4),
+        actor = round(actor_deflection, 4),
+        behavior = round(behavior_deflection, 4),
+        object = round(object_deflection, 4)
+    )
+)
 
 write(toJSON(result, auto_unbox = TRUE), stdout())

@@ -1,0 +1,13 @@
+Formal class 'dictionary' [package "actdata"] with 12 slots
+  ..@ key        : chr "germany2007"
+  ..@ context    : chr "Germany"
+  ..@ year       : chr "2007"
+  ..@ components : chr [1:4] "identity" "behavior" "modifier" "setting"
+  ..@ stats      : chr "mean"
+  ..@ groups     : chr [1:3] "male" "female" "all"
+  ..@ individual : logi FALSE
+  ..@ filetype   : chr ".dat"
+  ..@ source     : chr "Interact 2.1 beta (May 2021)"
+  ..@ description: chr "From https://cs.uwaterloo.ca/~jhoey/research/ACTBackup/ACT/data.html: Ratings of 376 Identities, 393 Behaviors,"| __truncated__
+  ..@ citation   : chr "Schroder, Tobias. Mean Affective Ratings of 1100 Concepts by German Adults in 2007 [Computer file]. Distributed"| __truncated__
+  ..@ notes      : chr ""

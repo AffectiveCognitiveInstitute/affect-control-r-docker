@@ -87,3 +87,6 @@ Create a production-ready containerized runtime for R that supports ACT and Baye
 
 ## Communication
 When making decisions that affect usability (entrypoint choice, API shape, tagging), document the rationale briefly in the README or in PR notes.
+
+## Local Testing
+Use the venv to test the app locally. Check the /health and /r-check endpoints to verify.

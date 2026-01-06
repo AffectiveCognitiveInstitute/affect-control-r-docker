@@ -48,7 +48,11 @@ COPY install_packages.R .
 RUN Rscript install_packages.R
 
 COPY app.py .
-
+COPY act_core.py .
+COPY mcp_server.py .
+COPY r ./r
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
 ENV PYTHONUNBUFFERED=1
 
@@ -61,4 +65,4 @@ RUN chown -R appuser:appuser /app /opt/venv
 USER 1000
 
 EXPOSE 5000
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "--log-level", "debug", "app:app"]
+ENTRYPOINT ["./entrypoint.sh"]

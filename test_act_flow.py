@@ -1,13 +1,13 @@
 
 import sys
 import json
-from act_api import init_conversation, step_conversation
+from act_core import init_conversation, step_conversation
 
 def run_test():
     print("Initializing conversation: Doctor - Patient")
     try:
         # Note: 'doctor' and 'patient' are standard terms usually in US dictionaries
-        state = init_conversation("Doctor", "Patient", dictionary="default")
+        state = init_conversation("doctor", "patient", dictionary="germany2007")
         print("Initialization successful.")
         print(f"Actor: {state['actor']['term']} {state['actor']['epa']}")
         print(f"Object: {state['object']['term']} {state['object']['epa']}")
@@ -18,7 +18,7 @@ def run_test():
     print("\nExecuting step: Doctor checks Patient")
     try:
         # 'checks' or 'instructs' or 'advises'
-        state = step_conversation(state, "checks")
+        state = step_conversation(state, "help")
         result = state["last_result"]
         
         print("Step successful.")
@@ -30,8 +30,17 @@ def run_test():
             print("FAILED: Missing transient components")
             return False
             
-        if not isinstance(result['deflection'], (int, float)):
-             print("FAILED: Deflection is not numeric")
+        # Validation
+        deflection_val = result['deflection']
+        if isinstance(deflection_val, dict):
+            if 'total' in deflection_val:
+                deflection_val = deflection_val['total']
+            else:
+                 print(f"FAILED: Deflection dict missing 'total': {deflection_val}")
+                 return False
+        
+        if not isinstance(deflection_val, (int, float)):
+             print(f"FAILED: Deflection is not numeric: {type(deflection_val)}")
              return False
              
         return True
