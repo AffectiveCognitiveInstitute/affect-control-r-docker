@@ -1,4 +1,5 @@
 import inspect
+import sys
 import functools
 import asyncio
 from typing import Any, Dict
@@ -79,9 +80,21 @@ def register_act_tools():
         mcp.tool()(wrapped_func)
         count += 1
         
-    print(f"Registered {count} tools from act_core.")
+    sys.stderr.write(f"Registered {count} tools from act_core.\n")
+
+# Register tools immediately so they are available when importing 'mcp' for uvicorn
+try:
+    register_act_tools()
+except Exception as e:
+    sys.stderr.write(f"Critical error registering tools: {e}\n")
+    # We don't exit here to avoid breaking imports if something minor fails,
+    # but strictly speaking this is critical.
+    pass
 
 if __name__ == "__main__":
-    register_act_tools()
-    # Run the server using stdio transport
-    mcp.run()
+    try:
+        # Run the server using stdio transport
+        mcp.run()
+    except Exception as e:
+        sys.stderr.write(f"Critical error starting MCP server: {e}\n")
+        sys.exit(1)

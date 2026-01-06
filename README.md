@@ -11,7 +11,7 @@ This repository contains a Dockerized environment for Affect Control Theory rese
 You can pull and run the pre-built image directly from DockerHub:
 
 ```bash
-docker run -p 5000:5000 createiflabs/affect-control-r-docker:latest
+docker run -p 5000:5000 createiflabs/affect-control-r-docker:main
 ```
 
 Or build it locally:
