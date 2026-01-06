@@ -6,7 +6,7 @@ ENV LANG=C.UTF-8
 
 # Required for rpy2 to find R shared libraries
 ENV R_HOME=/usr/local/lib/R
-ENV LD_LIBRARY_PATH=/usr/local/lib/R/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/lib/R/lib:${LD_LIBRARY_PATH:-}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libharfbuzz-dev \
     libfribidi-dev \
     libpng-dev \
-    libtiff5-dev \
+    libtiff-dev \
     libjpeg-dev \
     && rm -rf /var/lib/apt/lists/*
 
