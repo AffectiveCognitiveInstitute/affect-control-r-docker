@@ -83,6 +83,31 @@ Step through an event in the simulation.
   ```
 - **Response**: Updated state with event deflection and transient impressions.
 
+### POST /act/deflection
+Calculate deflection between fundamental and transient impressions.
+- **Input**: `{"fundamentals": [1.0, 1.0, 1.0], "transients": [2.0, 2.0, 2.0]}`
+- **Response**: `{"deflection": 3.0}`
+
+### POST /act/transients
+Calculate transient impressions after an event.
+- **Input**: `{"actor": [...], "behavior": [...], "object": [...], "dictionary": "us_2015"}`
+- **Response**: `{"actor_transient": [...], "behavior_transient": [...], "object_transient": [...]}`
+
+### POST /act/emotions
+Predict characterizing emotions for the interactants.
+- **Input**: `{"actor": [...], "behavior": [...], "object": [...], "dictionary": "us_2015"}`
+- **Response**: `{"actor_emotion": {"epa": [...], "label": "happy"}, "object_emotion": ...}`
+
+### POST /act/reidentify
+Calculate reidentified EPA to reduce deflection for a specific element (actor, behavior, or object).
+- **Input**: `{"actor": [...], "behavior": [...], "object": [...], "element": "actor", "dictionary": "us_2015"}`
+- **Response**: `{"reidentified_epa": [...]}`
+
+### POST /act/closest
+Find the closest dictionary term to a given EPA vector.
+- **Input**: `{"epa": [2.5, 1.5, 0.5], "type": "identity", "dictionary": "us_2015", "n": 3}`
+- **Response**: `{"matches": [{"term": "doctor", "distance": 0.1, "epa": [...]}, ...]}`
+
 ## Analysis Workflow
 
 Here is how to perform a complete ACT analysis using the API:
