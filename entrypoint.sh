@@ -5,7 +5,7 @@ set -e
 MODE=${RUN_MODE:-REST}
 
 if [ "$MODE" = "MCP" ]; then
-    echo "Starting MCP Server..."
+    echo "Starting MCP Server (SSE transport)..."
     exec python3 mcp_server.py
 else
     echo "Starting REST API (Gunicorn)..."

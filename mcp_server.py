@@ -7,7 +7,9 @@ from mcp.server.fastmcp import FastMCP
 import act_core
 
 # Initialize FastMCP server
-mcp = FastMCP("ACT Compute Service")
+# host="0.0.0.0" allows connections from outside Docker container
+# port=5000 matches the exposed port
+mcp = FastMCP("ACT Compute Service", host="0.0.0.0", port=5000)
 
 def create_mcp_wrapper(func):
     """
@@ -93,8 +95,8 @@ except Exception as e:
 
 if __name__ == "__main__":
     try:
-        # Run the server using stdio transport
-        mcp.run()
+        # Run the server using SSE transport (HTTP-based, long-running)
+        mcp.run(transport="sse")
     except Exception as e:
         sys.stderr.write(f"Critical error starting MCP server: {e}\n")
         sys.exit(1)
